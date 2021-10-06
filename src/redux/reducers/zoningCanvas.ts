@@ -13,6 +13,5 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
     }
 })
 
-export const { switchState } = zoningCanvasSlice.actions; //We export the actions to be used in the project.
-
-export default zoningCanvasSlice.reducer; //We need to export the reducer which is being called in the store.tsx file as UsersReducer
+export const { switchState } = zoningCanvasSlice.actions; //We export the actions to be used in the project
+export default zoningCanvasSlice; //We need to export the reducer which is being called in the store.tsx file as UsersReducer

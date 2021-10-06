@@ -9,6 +9,4 @@ const store = configureStore({
    }
 })
 
-type RootState = ReturnType<typeof store.getState>;
-export const selectZones = (state:RootState) => state.zoningCanvas.zones;
-export default store;
+export default store; 
