@@ -4,12 +4,32 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
     name: "zoningCanvas", //Give the slice the name of the file
     initialState: {
         draw: true,
-        zones: [],
+        zones: [
+            {
+                x: 200,
+                y: 200,
+                width: 500,
+                height: 300
+            },
+            {
+                x: 295,
+                y: 50,
+                width: 100,
+                height: 300
+            },
+        ],
     }, //We can provide an intitial state eg: { Id: 1, Name: "Admin", ... }
     reducers: { //Here the list of actions/reducers need to be added which is going to be exported and called throughout the project
         switchState : (state) => {
             state.draw = (state.draw ? false : true);
         },
+        addZone : (state, action) => {
+            state.zones = [
+                ...state.zones,
+                action.payload
+            ]
+            return state;
+        }
     }
 })
 
