@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'; //createSlice needs to be import
 export const zoningCanvasSlice = createSlice({ //Create a slice with the file name as prefix
     name: "zoningCanvas", //Give the slice the name of the file
     initialState: {
-        draw: true,
+        draw: false,
         zones: [
             {
                 x: 200,

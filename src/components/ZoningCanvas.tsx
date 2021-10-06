@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { switchState } from "../redux/reducers/zoningCanvas";
 import { Stage, Layer, Rect } from "react-konva";
@@ -59,25 +59,33 @@ const ZoningCanvas = () => {
                         height: y - sy,
                         key: "0"
                     }
-                ])
+                ]);
+                console.log(newZone);
             }
         }
     }
 
-    const zonesToDraw = [...zones, ...newZones];
+    const zonesToDraw = [...zones, ...newZones, ...newZone];
 
     return (
         <React.Fragment>
             <p>Current canvas state {draw.toString()}</p>
             <button onClick={() => dispatch(switchState())}>Switch State</button>
             <Stage
-                onMouseDown = { handleMouseDown }
-                onMouseUp = { handleMouseUp }
-                onMouseMove = { handleMouseMove }
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+                onMouseMove={handleMouseMove}
                 width={1000}
                 height={1000}>
                 <Layer>
-                    {zonesToDraw.map((zone: any) => (
+                    <Rect
+                        x={newZone.x}
+                        y={newZone.y}
+                        width={newZone.width}
+                        height={newZone.height}
+                        fill="red"
+                    />
+                    {zonesToDraw.map(zone => (
                         <Zone
                             x={zone.x}
                             y={zone.y}
