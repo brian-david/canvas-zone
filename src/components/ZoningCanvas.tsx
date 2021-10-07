@@ -9,6 +9,7 @@ const ZoningCanvas = () => {
     const dispatch = useDispatch();
     const [newZone, setNewZone] = useState<any>([]);
     const [newZones, setNewZones] = useState([] as any);
+    const [selectedShapeKey, setSelectedShapeKey] = useState<string>("");
 
     const handleMouseDown = (event: any) => {
         if (!draw) {
@@ -18,7 +19,12 @@ const ZoningCanvas = () => {
                 setNewZone([{ x, y, width: 0, height: 0, key: "0" }]);
             }
         }
-        else return;
+        else {
+            const clickedOnEmpty = event.target === event.target.getStage();
+            if (clickedOnEmpty) {
+                setSelectedShapeKey("");
+            }
+        }
     }
 
     const handleMouseUp = (e: any) => {
@@ -57,13 +63,21 @@ const ZoningCanvas = () => {
                         y: sy,
                         width: x - sx,
                         height: y - sy,
-                        key: "0"
+                        key: "0",
                     }
                 ]);
                 console.log(newZone);
             }
         }
     }
+
+    const checkDeselect = (e: any) => {
+        // deselect when clicked on empty area
+        const clickedOnEmpty = e.target === e.target.getStage();
+        if (clickedOnEmpty) {
+            setSelectedShapeKey("");
+        }
+    };
 
     const zonesToDraw = [...zones, ...newZones, ...newZone];
 
@@ -72,26 +86,34 @@ const ZoningCanvas = () => {
             <p>Current canvas state {draw.toString()}</p>
             <button onClick={() => dispatch(switchState())}>Switch State</button>
             <Stage
+                //drawing tools
                 onMouseDown={handleMouseDown}
                 onMouseUp={handleMouseUp}
                 onMouseMove={handleMouseMove}
+                onTouchStart={checkDeselect}
                 width={1000}
                 height={1000}>
                 <Layer>
-                    <Rect
-                        x={newZone.x}
-                        y={newZone.y}
-                        width={newZone.width}
-                        height={newZone.height}
-                        fill="red"
-                    />
-                    {zonesToDraw.map(zone => (
+                    {zonesToDraw.map((zone, i: number) => (
                         <Zone
                             x={zone.x}
                             y={zone.y}
                             height={zone.height}
                             width={zone.width}
                             draw={draw}
+                            isSelected={zone.key === selectedShapeKey}
+                            onSelect={() => {
+                                setSelectedShapeKey(zone.key);
+                                console.log("Zonekey = ", zone.key);
+                                console.log("selectedId = ", selectedShapeKey);
+                            }}
+
+                            onChange={(newAttrs: any) => {
+                                const rects = zonesToDraw.slice();
+                                rects[i] = newAttrs;
+                                setNewZones(rects);
+                            }}
+                            key={zone.key}
                         />
                     ))}
                 </Layer>
