@@ -30,6 +30,7 @@ const ZoningCanvas = () => {
     const handleMouseUp = (e: any) => {
         if (!draw) {
             console.log("Mouse Up, new zone created");
+            console.log(zones);
             if (newZone.length === 1) {
                 const sx = newZone[0].x;
                 const sy = newZone[0].y;
@@ -47,7 +48,11 @@ const ZoningCanvas = () => {
                 console.log(newZones);
             }
         }
-        else return;
+        else{
+            console.log(zones);
+            //need to update the storage area for the zones
+            //when things change 
+        };
     }
 
     const handleMouseMove = (e: any) => {
@@ -101,6 +106,8 @@ const ZoningCanvas = () => {
                             height={zone.height}
                             width={zone.width}
                             draw={draw}
+                            zoneType={zone.zoneType}
+
                             isSelected={zone.key === selectedShapeKey}
                             onSelect={() => {
                                 setSelectedShapeKey(zone.key);
