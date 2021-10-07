@@ -7,6 +7,22 @@ const Zone = (props: any, {onSelect}:any) => {
 
     const zoneKey = props.key;
 
+    let zoneColour:string; 
+    switch (props.zoneType){
+        case "advert": {
+            zoneColour = "red";
+            break;
+        }
+        case "headline": {
+            zoneColour = "green";
+            break;
+        }
+        default : {
+            zoneColour = "black";
+            break;
+        }
+    }
+
     React.useEffect(() => {
         if (props.isSelected) {
 
@@ -30,7 +46,7 @@ const Zone = (props: any, {onSelect}:any) => {
                 height={props.height}
                 width={props.width}
                 fill="transparent"
-                stroke="black"
+                stroke={zoneColour}
                 draggable={props.draw}
                 onClick={props.onSelect}
                 onTransformEnd={(e) => {

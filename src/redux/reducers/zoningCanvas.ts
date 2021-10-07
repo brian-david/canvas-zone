@@ -10,7 +10,8 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
                 y: 200,
                 width: 500,
                 height: 300,
-                key: 1
+                key: 1,
+                zoneType: "advert"
             },
             {
                 x: 295,
@@ -18,6 +19,7 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
                 width: 100,
                 height: 300,
                 key: 2,
+                zoneType: "headline"
             },
         ],
     }, //We can provide an intitial state eg: { Id: 1, Name: "Admin", ... }
