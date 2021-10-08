@@ -1,9 +1,11 @@
-import React from "react";
+import { useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Rect, Transformer } from "react-konva";
 
-const Zone = (props: any, {onSelect}:any) => {
-    const shapeRef = React.useRef<any>();
-    const trRef = React.useRef<any>();
+const Zone = ( {...props } ) => {
+    const zoningCanvas = useSelector((state:any) => state);
+    const shapeRef = useRef<any>();
+    const trRef = useRef<any>();
 
     const zoneKey = props.key;
 
@@ -23,22 +25,17 @@ const Zone = (props: any, {onSelect}:any) => {
         }
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (props.isSelected) {
-
-            console.log("shape ref = ", shapeRef.current);
-			console.log("transformer ref = ", trRef.current);
-            
             if (trRef !== undefined && shapeRef !== undefined){
                 trRef.current.nodes([shapeRef.current]);
                 trRef.current.getLayer().batchDraw();
             }
-            
         }
     }, [props.isSelected]);
 
     return (
-        <React.Fragment>
+        <>
             <Rect
                 x={props.x}
                 ref={shapeRef}
@@ -79,7 +76,7 @@ const Zone = (props: any, {onSelect}:any) => {
                     }}
                 />
             )}
-        </React.Fragment>
+        </>
     );
 }
 

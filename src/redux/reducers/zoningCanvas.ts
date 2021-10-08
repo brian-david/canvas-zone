@@ -28,14 +28,15 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
             state.draw = (state.draw ? false : true);
         },
         addZone : (state, action) => {
+            console.log("new zone added to the global store");
             state.zones = [
                 ...state.zones,
                 action.payload
             ]
-            return state;
+            //return state;
         }
     }
 })
 
-export const { switchState } = zoningCanvasSlice.actions; //We export the actions to be used in the project
-export default zoningCanvasSlice; //We need to export the reducer which is being called in the store.tsx file as UsersReducer
+export const { switchState, addZone  } = zoningCanvasSlice.actions; //We export the actions to be used in the project
+//export default zoningCanvasSlice; //We need to export the reducer which is being called in the store.tsx file as UsersReducer
