@@ -4,7 +4,7 @@ import ZoningCanvas from './components/ZoningCanvas';
 function App() {
   return (
     <div className="App">
-      <ZoningCanvas></ZoningCanvas>
+      <ZoningCanvas />
     </div>
   );
 }

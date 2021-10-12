@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { switchState } from "../redux/reducers/zoningCanvas";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { switchState, addZone } from "../redux/reducers/zoningCanvas";
 import { Stage, Layer, Rect } from "react-konva";
 import Zone from "./Zone";
+import store from "../redux/store";
 
 const ZoningCanvas = () => {
     const { draw, zones } = useSelector((state: any) => state.zoningCanvas);
     const dispatch = useDispatch();
     const [newZone, setNewZone] = useState<any>([]);
-    const [newZones, setNewZones] = useState([] as any);
+    //const [newZones, setNewZones] = useState([] as any);
     const [selectedShapeKey, setSelectedShapeKey] = useState<string>("");
+
+    console.log("global zones: ", zones);
+    //console.log("newZones: ", newZones);
+    console.log("newZone: ", newZone);
 
     const handleMouseDown = (event: any) => {
         if (!draw) {
-            console.log("create a new zone!");
             if (newZone.length === 0) {
                 const { x, y } = event.target.getStage().getPointerPosition();
                 setNewZone([{ x, y, width: 0, height: 0, key: "0" }]);
+                console.log("new zone created in 'handleMouseDown'. key: ", newZone.key);
             }
         }
         else {
@@ -29,8 +34,6 @@ const ZoningCanvas = () => {
 
     const handleMouseUp = (e: any) => {
         if (!draw) {
-            console.log("Mouse Up, new zone created");
-            console.log(zones);
             if (newZone.length === 1) {
                 const sx = newZone[0].x;
                 const sy = newZone[0].y;
@@ -40,24 +43,23 @@ const ZoningCanvas = () => {
                     y: sy,
                     width: x - sx,
                     height: y - sy,
-                    key: zones.length + 1
+                    key: zones.length + 1,
+                    zoneType: "advert",
                 };
-                newZones.push(zoneToAdd);
+                //newZones.push(zoneToAdd);
+                dispatch(addZone(zoneToAdd));
                 setNewZone([]);
-                setNewZones(newZones);
-                console.log(newZones);
+                console.log("globally stored zones : ", zones);
             }
         }
-        else{
+        else {
             console.log(zones);
-            //need to update the storage area for the zones
-            //when things change 
+            //
         };
     }
 
     const handleMouseMove = (e: any) => {
         if (!draw) {
-            //console.log("making the zones size");
             if (newZone.length === 1) {
                 const sx = newZone[0].x;
                 const sy = newZone[0].y;
@@ -71,7 +73,6 @@ const ZoningCanvas = () => {
                         key: "0",
                     }
                 ]);
-                console.log(newZone);
             }
         }
     }
@@ -84,11 +85,18 @@ const ZoningCanvas = () => {
         }
     };
 
-    const zonesToDraw = [...zones, ...newZones, ...newZone];
+    const zonesToDraw = [...zones, ...newZone];
+
+    let canvasState = "";
+    if (!draw) {
+        canvasState = "You can now draw on the canvas";
+    } else {
+        canvasState = "You can now edit the canvas";
+    }
 
     return (
         <React.Fragment>
-            <p>Current canvas state {draw.toString()}</p>
+            <p>{canvasState}</p>
             <button onClick={() => dispatch(switchState())}>Switch State</button>
             <Stage
                 //drawing tools
@@ -100,28 +108,32 @@ const ZoningCanvas = () => {
                 height={1000}>
                 <Layer>
                     {zonesToDraw.map((zone, i: number) => (
-                        <Zone
-                            x={zone.x}
-                            y={zone.y}
-                            height={zone.height}
-                            width={zone.width}
-                            draw={draw}
-                            zoneType={zone.zoneType}
+                        //<></>
+                        <Provider store={store}>
+                            <Zone
+                                x={zone.x}
+                                y={zone.y}
+                                height={zone.height}
+                                width={zone.width}
+                                draw={draw}
+                                zoneType={zone.zoneType}
 
-                            isSelected={zone.key === selectedShapeKey}
-                            onSelect={() => {
-                                setSelectedShapeKey(zone.key);
-                                console.log("Zonekey = ", zone.key);
-                                console.log("selectedId = ", selectedShapeKey);
-                            }}
+                                isSelected={zone.key === selectedShapeKey}
+                                onSelect={() => {
+                                    setSelectedShapeKey(zone.key);
+                                    console.log("Zonekey = ", zone.key);
+                                    console.log("selectedId = ", selectedShapeKey);
+                                }}
 
-                            onChange={(newAttrs: any) => {
-                                const rects = zonesToDraw.slice();
-                                rects[i] = newAttrs;
-                                setNewZones(rects);
-                            }}
-                            key={zone.key}
-                        />
+                                onChange={(newAttrs: any) => {
+                                    const rects = zonesToDraw.slice();
+                                    rects[i] = newAttrs;
+                                    //setNewZones(rects);
+                                }}
+                                key={zone.key}
+                            />
+                        </Provider>
+
                     ))}
                 </Layer>
             </Stage>
@@ -130,7 +142,3 @@ const ZoningCanvas = () => {
 };
 
 export default ZoningCanvas
-
-function addZone(zoneToAdd: { x: any; y: any; width: number; height: number; key: any; }): any {
-    throw new Error("Function not implemented.");
-}
