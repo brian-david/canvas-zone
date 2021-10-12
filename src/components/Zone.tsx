@@ -56,6 +56,7 @@ const Zone = (props: any) => {
                         x: e.target.x(),
                         y: e.target.y(),
                     }
+                    console.log("shape moved")
                 }}
 
                 onClick={props.onSelect}

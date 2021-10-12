@@ -134,6 +134,11 @@ const ZoningCanvas = () => {
                                     const rects = zonesToDraw.slice();
                                     rects[i] = newAttrs;
                                     console.log("shape change");
+                                    ondragend
+                                }}
+
+                                OnDragEnd = {(e:any) => {
+                                    console.log("DRAG END - ");;
                                 }}
                             />
                         </Provider>
