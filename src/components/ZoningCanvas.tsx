@@ -134,7 +134,7 @@ const ZoningCanvas = () => {
                                     const rects = zonesToDraw.slice();
                                     rects[i] = newAttrs;
                                     console.log("shape change");
-                                    ondragend
+                                    //ondragend
                                 }}
 
                                 OnDragEnd = {(e:any) => {
