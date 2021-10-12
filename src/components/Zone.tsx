@@ -46,6 +46,7 @@ const Zone = ( {...props } ) => {
                 stroke={zoneColour}
                 draggable={props.draw}
                 onClick={props.onSelect}
+                strokeScaleEnabled={false}
                 onTransformEnd={(e) => {
                     const node = shapeRef.current;
                     if (node) {
@@ -68,6 +69,7 @@ const Zone = ( {...props } ) => {
                     ref={trRef}
                     rotateEnabled={false}
                     keepRatio={false}
+                    ignoreStroke={true}
                     boundBoxFunc={(oldBox, newBox) => {
                         if (newBox.width < 5 || newBox.height < 5) {
                             return oldBox;
