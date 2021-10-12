@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { switchState, addZone } from "../redux/reducers/zoningCanvas";
+import { switchState, addZone, selectZone } from "../redux/reducers/zoningCanvas";
 import { Stage, Layer, Rect } from "react-konva";
 import Zone from "./Zone";
 import store from "../redux/store";
@@ -82,6 +82,7 @@ const ZoningCanvas = () => {
         const clickedOnEmpty = e.target === e.target.getStage();
         if (clickedOnEmpty) {
             setSelectedShapeKey("");
+            console.log("Nothing Selected");
         }
     };
 
@@ -92,6 +93,10 @@ const ZoningCanvas = () => {
         canvasState = "You can now draw on the canvas";
     } else {
         canvasState = "You can now edit the canvas";
+    }
+
+    const updateZone = (newA:any) => {
+        console.log(newA)
     }
 
     return (
@@ -117,23 +122,21 @@ const ZoningCanvas = () => {
                                 width={zone.width}
                                 draw={draw}
                                 zoneType={zone.zoneType}
+                                zoneKey={zone.key}
+                                zoneProps={zone}
 
                                 isSelected={zone.key === selectedShapeKey}
                                 onSelect={() => {
                                     setSelectedShapeKey(zone.key);
-                                    console.log("Zonekey = ", zone.key);
-                                    console.log("selectedId = ", selectedShapeKey);
-                                }}
+                                }}                    
 
                                 onChange={(newAttrs: any) => {
                                     const rects = zonesToDraw.slice();
                                     rects[i] = newAttrs;
-                                    //setNewZones(rects);
+                                    console.log("shape change");
                                 }}
-                                key={zone.key}
                             />
                         </Provider>
-
                     ))}
                 </Layer>
             </Stage>

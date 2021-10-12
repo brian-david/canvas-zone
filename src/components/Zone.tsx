@@ -1,16 +1,17 @@
 import { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Rect, Transformer } from "react-konva";
+import Konva from "konva";
 
-const Zone = ( {...props } ) => {
-    const zoningCanvas = useSelector((state:any) => state);
+const Zone = (props: any) => {
+    const { draw, zones } = useSelector((state: any) => state.zoningCanvas);
     const shapeRef = useRef<any>();
     const trRef = useRef<any>();
 
     const zoneKey = props.key;
 
-    let zoneColour:string; 
-    switch (props.zoneType){
+    let zoneColour: string;
+    switch (props.zoneType) {
         case "advert": {
             zoneColour = "red";
             break;
@@ -19,7 +20,7 @@ const Zone = ( {...props } ) => {
             zoneColour = "green";
             break;
         }
-        default : {
+        default: {
             zoneColour = "black";
             break;
         }
@@ -27,7 +28,7 @@ const Zone = ( {...props } ) => {
 
     useEffect(() => {
         if (props.isSelected) {
-            if (trRef !== undefined && shapeRef !== undefined){
+            if (trRef !== undefined && shapeRef !== undefined) {
                 trRef.current.nodes([shapeRef.current]);
                 trRef.current.getLayer().batchDraw();
             }
@@ -40,16 +41,28 @@ const Zone = ( {...props } ) => {
                 x={props.x}
                 ref={shapeRef}
                 y={props.y}
+                {...props.zoneProps}
                 height={props.height}
                 width={props.width}
                 fill={zoneColour}
                 opacity={0.3}
                 stroke={"black"}
                 strokeWidth={1}
+
                 draggable={props.draw}
+                onDragEnd={(e) => {
+                    onchange = {
+                        ...props.shapeProps,
+                        x: e.target.x(),
+                        y: e.target.y(),
+                    }
+                }}
+
                 onClick={props.onSelect}
                 strokeScaleEnabled={false}
+
                 onTransformEnd={(e) => {
+                    console.log("Zoning transform end");
                     const node = shapeRef.current;
                     if (node) {
                         const scaleX = node.scaleX();
@@ -66,6 +79,7 @@ const Zone = ( {...props } ) => {
                     }
                 }}
             />
+
             {props.isSelected && (
                 <Transformer
                     ref={trRef}

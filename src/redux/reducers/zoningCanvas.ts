@@ -3,14 +3,15 @@ import { createSlice } from '@reduxjs/toolkit'; //createSlice needs to be import
 export const zoningCanvasSlice = createSlice({ //Create a slice with the file name as prefix
     name: "zoningCanvas", //Give the slice the name of the file
     initialState: {
-        draw: false,
+        draw: true,
+        selectedZone: 0,
         zones: [
             {
                 x: 200,
                 y: 200,
                 width: 500,
                 height: 300,
-                key: 1,
+                key: "A1",
                 zoneType: "advert"
             },
             {
@@ -18,7 +19,7 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
                 y: 50,
                 width: 100,
                 height: 300,
-                key: 2,
+                key: "A2",
                 zoneType: "headline"
             },
         ],
@@ -26,6 +27,10 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
     reducers: { //Here the list of actions/reducers need to be added which is going to be exported and called throughout the project
         switchState : (state) => {
             state.draw = (state.draw ? false : true);
+        },
+        selectZone : (state, action) => {
+            console.log("new shape selected");
+            state.selectedZone = action.payload
         },
         addZone : (state, action) => {
             console.log("new zone added to the global store");
@@ -38,5 +43,5 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
     }
 })
 
-export const { switchState, addZone  } = zoningCanvasSlice.actions; //We export the actions to be used in the project
+export const { switchState, addZone, selectZone } = zoningCanvasSlice.actions; //We export the actions to be used in the project
 //export default zoningCanvasSlice; //We need to export the reducer which is being called in the store.tsx file as UsersReducer
