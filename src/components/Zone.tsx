@@ -42,8 +42,10 @@ const Zone = ( {...props } ) => {
                 y={props.y}
                 height={props.height}
                 width={props.width}
-                fill="transparent"
-                stroke={zoneColour}
+                fill={zoneColour}
+                opacity={0.3}
+                stroke={"black"}
+                strokeWidth={1}
                 draggable={props.draw}
                 onClick={props.onSelect}
                 strokeScaleEnabled={false}
