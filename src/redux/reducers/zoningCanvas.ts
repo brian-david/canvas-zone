@@ -36,8 +36,6 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
             return state;
         },
         updateZone : (state, action) => {
-            //console.log(action.payload);
-            
             return {
                 ...state,
                 zones: state.zones.map((zone, i) => i == action.payload.index? {...zone, x: action.payload.x, y: action.payload.y} : zone)

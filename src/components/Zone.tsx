@@ -41,32 +41,7 @@ const Zone = (props: any) => {
             ...shapeRef.current.attrs,
             index: shapeRef.current.index,
         }
-        
-        /*
-        const updatedZone = createAction('zoningCanvas/updateZone', function prepare(x:number, y:number, index:number){
-            return {
-                payload: {
-                    x,
-                    y,
-                    index
-                }
-            }
-            
-        });
-        */
-
-        console.log(shapeRef.current.attrs);
-        console.log(shapeRef.current.index);
-
-        //console.log(updatedZone(shapeRef.current.x(), shapeRef.current.y(), shapeRef.current.index))
-        //console.log(shapeRef.current);
-        //console.log(props.zoneProps);
-        //console.log(shapeRef.current);
-        //console.log(zones[shapeRef.current.index].x);
-        //console.log(shapeRef.current.x());
-        //zones[shapeRef.current.index].y = shapeRef.current.y();
         dispatch(updateZone(updatedZone));
-        //useDispatch(updateZone(sha))
     }
 
     return (
@@ -82,22 +57,10 @@ const Zone = (props: any) => {
                 opacity={0.3}
                 stroke={"black"}
                 strokeWidth={1}
-
                 draggable={props.draw}
-                // onDragEnd={(e) => {
-                //     onchange = {
-                //         ...props.shapeProps,
-                //         x: e.target.x(),
-                //         y: e.target.y(),
-                //     }
-                //     console.log("shape moved")
-                // }}
-
                 onClick={props.onSelect}
                 strokeScaleEnabled={false}
-
                 onDragEnd = {updateStore}
-
                 onTransformEnd={(e) => {
                     console.log("Zoning transform end");
                     const node = shapeRef.current;
