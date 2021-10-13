@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { switchState, addZone, selectZone } from "../redux/reducers/zoningCanvas";
+import { switchState, addZone } from "../redux/reducers/zoningCanvas";
 import { Stage, Layer, Rect } from "react-konva";
 import Zone from "./Zone";
 import store from "../redux/store";
@@ -128,6 +128,7 @@ const ZoningCanvas = () => {
                                 isSelected={zone.key === selectedShapeKey}
                                 onSelect={() => {
                                     setSelectedShapeKey(zone.key);
+                                    console.log(selectedShapeKey)
                                 }}                    
 
                                 onChange={(newAttrs: any) => {
@@ -138,7 +139,7 @@ const ZoningCanvas = () => {
                                 }}
 
                                 OnDragEnd = {(e:any) => {
-                                    console.log("DRAG END - ");;
+                                    console.log("DRAG END - ");
                                 }}
                             />
                         </Provider>

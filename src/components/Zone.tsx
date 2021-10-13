@@ -1,14 +1,15 @@
 import { useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Rect, Transformer } from "react-konva";
 import Konva from "konva";
+import { updateZone } from "../redux/reducers/zoningCanvas";
+import { createAction } from "@reduxjs/toolkit";
 
 const Zone = (props: any) => {
     const { draw, zones } = useSelector((state: any) => state.zoningCanvas);
     const shapeRef = useRef<any>();
     const trRef = useRef<any>();
-
-    const zoneKey = props.key;
+    const dispatch = useDispatch();
 
     let zoneColour: string;
     switch (props.zoneType) {
@@ -33,7 +34,40 @@ const Zone = (props: any) => {
                 trRef.current.getLayer().batchDraw();
             }
         }
-    }, [props.isSelected]);
+    });
+
+    const updateStore = () => {
+        const updatedZone = {
+            ...shapeRef.current.attrs,
+            index: shapeRef.current.index,
+        }
+        
+        /*
+        const updatedZone = createAction('zoningCanvas/updateZone', function prepare(x:number, y:number, index:number){
+            return {
+                payload: {
+                    x,
+                    y,
+                    index
+                }
+            }
+            
+        });
+        */
+
+        console.log(shapeRef.current.attrs);
+        console.log(shapeRef.current.index);
+
+        //console.log(updatedZone(shapeRef.current.x(), shapeRef.current.y(), shapeRef.current.index))
+        //console.log(shapeRef.current);
+        //console.log(props.zoneProps);
+        //console.log(shapeRef.current);
+        //console.log(zones[shapeRef.current.index].x);
+        //console.log(shapeRef.current.x());
+        //zones[shapeRef.current.index].y = shapeRef.current.y();
+        dispatch(updateZone(updatedZone));
+        //useDispatch(updateZone(sha))
+    }
 
     return (
         <>
@@ -50,17 +84,19 @@ const Zone = (props: any) => {
                 strokeWidth={1}
 
                 draggable={props.draw}
-                onDragEnd={(e) => {
-                    onchange = {
-                        ...props.shapeProps,
-                        x: e.target.x(),
-                        y: e.target.y(),
-                    }
-                    console.log("shape moved")
-                }}
+                // onDragEnd={(e) => {
+                //     onchange = {
+                //         ...props.shapeProps,
+                //         x: e.target.x(),
+                //         y: e.target.y(),
+                //     }
+                //     console.log("shape moved")
+                // }}
 
                 onClick={props.onSelect}
                 strokeScaleEnabled={false}
+
+                onDragEnd = {updateStore}
 
                 onTransformEnd={(e) => {
                     console.log("Zoning transform end");

@@ -4,7 +4,6 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
     name: "zoningCanvas", //Give the slice the name of the file
     initialState: {
         draw: true,
-        selectedZone: 0,
         zones: [
             {
                 x: 200,
@@ -28,20 +27,25 @@ export const zoningCanvasSlice = createSlice({ //Create a slice with the file na
         switchState : (state) => {
             state.draw = (state.draw ? false : true);
         },
-        selectZone : (state, action) => {
-            console.log("new shape selected");
-            state.selectedZone = action.payload
-        },
         addZone : (state, action) => {
             console.log("new zone added to the global store");
             state.zones = [
                 ...state.zones,
                 action.payload
             ]
-            //return state;
+            return state;
+        },
+        updateZone : (state, action) => {
+            //console.log(action.payload);
+            
+            return {
+                ...state,
+                zones: state.zones.map((zone, i) => i == action.payload.index? {...zone, x: action.payload.x, y: action.payload.y} : zone)
+            }
+            
         }
     }
 })
 
-export const { switchState, addZone, selectZone } = zoningCanvasSlice.actions; //We export the actions to be used in the project
+export const { switchState, addZone, updateZone } = zoningCanvasSlice.actions; //We export the actions to be used in the project
 //export default zoningCanvasSlice; //We need to export the reducer which is being called in the store.tsx file as UsersReducer
